@@ -1,0 +1,37 @@
+body {
+    margin-top: 50px;
+}
+
+footer {
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 2px; }
+    footer a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
+
+/* smart phones */
+@media screen and (max-device-width: 480px) {
+}
+
+label.error {
+    color: red;
+}
+.pagination.center {
+    text-align: center;
+}
+.pagination ul {
+    display: -moz-inline-box; /* FF2 or lower */
+    display: inline-block;
+    /* IE6/7 inline-block hack */
+    *display: inline;
+    *zoom: 1;
+}
+.truncation {
+    width: 350px;
+    overflow: auto;
+    text-overflow: ellipsis;
+}
+

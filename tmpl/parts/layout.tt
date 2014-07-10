@@ -1,0 +1,205 @@
+[%- MACRO css_link_ BLOCK -%]
+    <link rel="stylesheet" href="[% uri_for('/common/static/css/bootstrap-modal.css') %]">
+    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.5/leaflet.css">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css">
+    <![endif]-->
+[% page_css_link %]
+[%- END -%]
+
+[%- MACRO style_ BLOCK -%]
+    .truncation {
+        width: 350px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+[% page_style %]
+[%- END -%]
+
+[%- MACRO menu_ BLOCK -%]
+    [% IF c().user_name %]
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle user_name" data-toggle="dropdown"><span>Hello,[% c().user_name %]</span><b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <!--li><a data-toggle="modal" href="#nameChange">Edit account</a-->
+            <li><a class="namechange" data-toggle="editaccount">Edit account</a>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle user_name" data-toggle="dropdown">Your maps<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a class="addmap"   data-toggle="addmap">Add new map</a>
+            <li><a class="listmaps" data-toggle="listmaps">Manage maps</a></li>
+            <!--li><a class="editmap"  data-toggle="editmap" data="1">Manage maps</a></li-->
+        </ul>
+    </li>
+    [% ELSE %]
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="/auth/twitter/authenticate">Twitter</a></li>
+            <li><a href="/auth/facebook/authenticate">FaceBook</a></li>
+        </ul>
+    </li>
+    [% END %]
+[%- END -%]
+
+[%- MACRO content_ BLOCK -%]
+<div id="main">[% page_content %]</div>
+[% IF c().user_name %]
+    <div class="modal hide" id="modalBase">
+        <div class="modal-header">
+            <button class="close action_link" data="dismiss">×</button>
+            <h3>Edit account</h3>
+        </div>
+        <div class="modal-body">
+            <div>
+                <div class="hide modal_forms" id="editAccount">
+                    <form method="post" action="[% uri_for('/ajax/account') %]">
+                        <div>Account name: <input type="text" class="required" name="user_name" value="[% c().user_name %]"></div>
+                    </form>
+                </div>
+                <div class="hide modal_forms" id="listMaps">
+                </div>
+                <div class="hide modal_forms" id="editMapMeta">
+                    <form method="post" action="[% uri_for('/ajax/addmap') %]">
+                    </form>
+                <div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn action_link" data="dismiss">Close window</a>
+            <a href="#" class="btn btn-primary action_link" data="submit">Submit change</a>
+        </div>
+    </div>
+    <!-- /jQuery Template -->
+    <script id="js_listmaps_template" type="text/x-jquery-tmpl">
+        {{if maps}}
+        <table class="table table-striped vtable-condensed table-hover">
+            {{each maps}}
+                <tr><td class="action_link" data="collapsemap_${$value.map_id}" style="cursor:pointer;"><h5>${$value.map_name}</h5>
+                <div class="dropdownmap hide"><p class="truncation">${$value.description}</p><p><a href="#" class="btn btn-danger action_link pull-right" data="deletemap_${$value.map_id}">Delete</a><a href="#" class="btn btn-primary action_link pull-right" data="editmap_${$value.map_id}">Edit</a></p></div></td></tr>
+            {{/each}}
+        </table>
+        <div class="pagination center">
+            <ul>
+                <li class={{if pager.prev_page}}"prev"><a class="action_link" rel="previous" data="changepage_${pager.prev_page}">{{else}}"prev disabled"><a>{{/if}}&larr; Back</a><li>
+                <li><a>${pager.current_page}</a></li>
+                <li class={{if pager.next_page}}"next"><a class="action_link" rel="next" data="changepage_${pager.next_page}">{{else}}"next disabled"><a>{{/if}}Next &rarr;</a><li>
+            </ul>
+        </div>
+        {{else}}
+        <div class="center">No maps found!</div>
+        {{/if}}
+    </script>
+    <!-- /jQuery Template -->
+    <!-- /jQuery Template -->
+    <script id="js_editmap_template" type="text/x-jquery-tmpl">
+        <fieldset>
+            <h5>Get metadata from xml</h5>
+            <input type="hidden" name="map_id" value="${map_id}">
+            <div>
+                <span class="form_label">XML URL:</span>&nbsp;
+                <input type="text" class="url" name="xml_url" placeholder="Ex: http://example.com/map/tilemapresource.xml" value="${xml_url}">&nbsp;
+                <a href="#" class="btn action_link" data="parsexml">Parse map xml</a>
+                <label class="error" for="xml_url" generated="true"></label>
+            </div>
+            <h5>Map metadata</h3>
+            <div>
+                <span class="form_label">Map name:</span>&nbsp;
+                <input type="text" class="required" name="map_name" placeholder="Ex: Ancient map of Japan" value="${map_name}">
+                <label class="error" for="map_name" generated="true"></label>
+            </div>
+            <div>
+                <span class="form_label">Map URL:</span>&nbsp;
+                <input type="text" class="required map_url" name="map_url" placeholder="Ex: http://{a,b,c}.example.com/map/{x}/{y}/{z}.png" value="${map_url}">
+                <label class="error" for="map_url" generated="true"></label>
+            </div>
+            <div>
+                <span class="form_label">Y-axis as TMS:</span>&nbsp;
+                <input type="checkbox" name="is_tms"{{if is_tms}} checked="checked"{{/if}}>
+            </div>
+            <div>
+                <span class="form_label">Description:</span>&nbsp;
+                <input type="text" class="required" minlength="10" name="description" placeholder="Ex: Map of Japan in Edo era" value="${description}">
+                <label class="error" for="description" generated="true"></label>
+            </div>
+            <div>
+                <span class="form_label">Attribution:</span>&nbsp;
+                <input type="text" class="required" minlength="10" name="attribution" placeholder="Ex: Copyright (c) Foo Bar" value="${attribution}">
+                <label class="error" for="attribution" generated="true"></label>
+            </div>
+            <div>
+                <span class="form_label">Latitude:</span>&nbsp;
+                <input type="text" class="required input-small" min="-90.0" max="90.0" name="min_lat" placeholder="South border" value="${min_lat}">&nbsp;
+                <input type="text" class="required input-small" min="-90.0" max="90.0" name="max_lat" placeholder="North border" value="${max_lat}">
+                <label class="error" for="lat" generated="true"></label>
+            </div>
+            <div>
+                <span class="form_label">Longitude:</span>&nbsp;
+                <input type="text" class="required input-small" min="-180.0" max="180.0" name="min_lng" placeholder="West border" value="${min_lng}">&nbsp;
+                <input type="text" class="required input-small" min="-180.0" max="180.0" name="max_lng" placeholder="East border" value="${max_lng}">
+                <label class="error" for="lng" generated="true"></label>
+            </div>
+            <div>
+                <span class="form_label">Zoom:</span>&nbsp;
+                <input type="text" class="required input-small" min="0" max="20" name="min_zoom" placeholder="Minumum zoom" value="${min_zoom}">&nbsp;
+                <input type="text" class="required input-small" min="0" max="20" name="max_zoom" placeholder="Maximum zoom" value="${max_zoom}">
+                <label class="error" for="zoom" for="max_zoom" generated="true"></label>
+            </div>
+            <div>
+                <span class="form_label">Era:</span>&nbsp;
+                <input type="text" class="input-small" name="min_year" placeholder="{{if use_endyear}}Start year{{else}}Year{{/if}}" value="${min_year}">&nbsp;
+                <span class="{{if use_endyear}}{{else}}hide{{/if}}"><input type="text" class="input-small" name="max_year" placeholder="End year" value="{{if use_endyear}}${max_year}{{/if}}">&nbsp;</span>
+                <input type="checkbox" class="action_link" data="use_endyear" name="use_endyear"{{if use_endyear}} checked="checked"{{/if}}> use end year
+                <label class="error" for="year" generated="true"></label>
+            </div>
+            <input type="hidden" name="serial" value="${serial}">
+        </fieldset>
+    </script>
+    <!-- /jQuery Template -->
+[% END %]
+[%- END -%]
+
+[%- MACRO javascript_ BLOCK -%]
+<script src="//ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<script src="[% uri_for('/common/static/js/strftime.js') %]"></script>
+<script src="[% uri_for('/common/static/js/sprintf-0.7-beta1.js') %]"></script>
+<script src="[% uri_for('/common/static/js/micro-location.js') %]"></script>
+<script src="[% uri_for('/common/static/js/jquery.ah-placeholder.js') %]"></script>
+<script src="[% uri_for('/common/static/js/bootstrap-modalmanager.js') %]"></script>
+<script src="[% uri_for('/common/static/js/bootstrap-modal.js') %]"></script>
+<script src="//cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+<script src="[% static_file('/static/js/main.js') %]"></script>
+<script src="[% static_file('/static/js/opentilemap.util.js') %]"></script>
+[% IF c().user_name %]
+<script type="text/javascript">
+    $('#modalBase').jqModalBase({});
+    $('#editAccount').jqAccount({
+        "user_name"  : "[% c().user_name | js %]",
+        "csrf_token" : "[% c().get_csrf_defender_token %]"
+    });
+    $('#editMapMeta').jqEditMapMeta({
+        "csrf_token" : "[% c().get_csrf_defender_token %]"
+    });
+    $('#listMaps').jqListMaps({
+        "csrf_token" : "[% c().get_csrf_defender_token %]"
+    });/**/
+</script>
+[% END %]
+[% page_javascript %]
+[%- END -%]
+
+[% include "parts/commonlayout.tt" WITH 
+    default_title = 'OpenTileMap'
+    narrow_layout = 0
+    title_logo    = 'otm_logo.png'
+    css_link      = css_link_()
+    style         = style_()
+    menu          = menu_()
+    content       = content_()
+    javascript    = javascript_()
+%]

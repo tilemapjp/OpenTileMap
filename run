@@ -1,0 +1,10 @@
+#!/bin/sh
+
+exec /usr/bin/start_server --port 9002 \
+--interval 2 \
+-- /usr/bin/plackup \
+-Ilib \
+-Iextlib \
+-s Starman \
+/home/OTM/app.psgi \
+--workers 10

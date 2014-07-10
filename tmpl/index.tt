@@ -1,0 +1,75 @@
+[%- MACRO page_style_ BLOCK -%]
+    /* These are recommended styles for the default splitpane */
+
+    .goog-splitpane-handle {
+      border-left: 1px solid gray;
+      border-right: 1px solid gray;
+      background: #ccc;
+      position: absolute;
+    }
+
+    .goog-splitpane-handle-horizontal {
+      cursor: col-resize;
+    }
+
+    .goog-splitpane-handle-vertical {
+      cursor: row-resize;
+    }
+
+    .goog-splitpane-first-container,
+    .goog-splitpane-second-container {
+      border: 1px solid gray;
+      overflow: auto;
+      position: absolute;
+    }
+
+    .table th.layerSelected, .table td.layerSelected {
+        background-color: #dfdfdf;
+    }
+
+    .table-striped tbody>tr:nth-child(odd)>td.layerSelected, .table-striped tbody>tr:nth-child(odd)>th.layerSelected {
+        background-color: #d9d9d9;
+    }
+
+    .table-striped.table-hover tbody tr:hover > td,
+    .table-striped.table-hover tbody tr:hover > th {
+        background-color: #efefef;
+    }
+
+    .table-striped.table-hover tbody tr:nth-child(odd):hover > td,
+    .table-striped.table-hover tbody tr:nth-child(odd):hover > th {
+        background-color: #e9e9e9;
+    }
+[%- END -%]
+
+[%- MACRO page_content_ BLOCK -%]
+<div class='goog-splitpane' id="map_base"><!--id='anotherSplitter'-->
+    <div class='goog-splitpane-first-container'>
+        <div id="map" style="height:100%;width:100%;"></div>
+    </div>
+    <div class='goog-splitpane-second-container'>
+        <table class="table table-striped vtable-condensed table-hover">
+        </table>
+    </div>
+    <div class='goog-splitpane-handle'></div>
+</div>
+[%- END -%]
+
+[%- MACRO page_javascript_ BLOCK -%]
+<script src="[% uri_for('/common/static/js/oms.min.js') %]"></script>
+<script src="[% uri_for('/common/static/js/jquery.exresize.0.1.0.js') %]"></script>
+<script type="text/javascript" src="http://t.tilemap.jp/js/goog/base.js"></script>
+<script>
+    goog.require('goog.ui.SplitPane');
+</script>
+<script src="[% static_file('/static/js/opentilemap.map.js') %]"></script>
+<script type="text/javascript">
+var mappage = $('#map_base').jqMap();
+</script>
+[%- END -%]
+
+[% include "parts/layout.tt" WITH 
+    page_style      = page_style_()
+    page_content    = page_content_()
+    page_javascript = page_javascript_()
+%]

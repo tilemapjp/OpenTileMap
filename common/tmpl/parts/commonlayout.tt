@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>[% title || default_title %]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+  <meta name="format-detection" content="telephone=no">
+  <!-- Stylesheets -->
+  [% IF narrow_layout %]
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/bootstrap.css') %]">
+  [% ELSE %]
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css">
+  [% END %]
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/font-awesome.css') %]">  
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/prettyPhoto.css') %]">
+  <!-- Parallax slider -->
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/slider.css') %]">
+  <!-- Flexslider -->
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/flexslider.css') %]">
+
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/style.css') %]">
+
+  <!-- Colors - Orange, Purple, Light Blue (lblue), Red, Green and Blue -->
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/green.css') %]">
+  [% IF narrow_layout %]
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/bootstrap-responsive_narrow.css') %]">
+  [% ELSE %]
+  <link rel="stylesheet" href="[% uri_for('/common/static/css/bootstrap-responsive_wide.css') %]">
+  [% END %]  
+  <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+[% css_link %]
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="[% uri_for('/static/img/favicon.ico') %]">
+  <style type="text/css">
+  label.error {
+    color: red;
+  }
+  .navbar .brand img {
+    margin-top: -20px;
+    margin-bottom: -20px;
+  }
+  .pagination.center {
+    text-align: center;
+  }
+  .pagination ul {
+    display: -moz-inline-box; /* FF2 or lower */
+    display: inline-block;
+    /* IE6/7 inline-block hack */
+    *display: inline;
+    *zoom: 1;
+  }
+[% style %]
+  </style>
+</head>
+
+<body>
+<!-- Navigation bar starts -->
+          <div class="navbar">
+           <div class="navbar-inner">
+             <div class="container[% IF !narrow_layout %] wide[% END %]">
+               <div class="brand"><a href="[% uri_for('/') %]"><img src="[% uri_for('/common/static/img/' _ title_logo ) %]" alt="[% title || default_title %]" name="[% title || default_title %]"></a></div>
+               <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                 <span>Menu</span>
+               </a>
+               <div class="nav-collapse collapse">
+                 <ul class="nav">
+[% menu %]
+                   <!--li><a href="index.html">Home #1</a></li>
+                   <li><a href="index1.html">Home #2</a></li>
+                   <!-- Refer Bootstrap navbar doc -->
+                   <!--li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages #1 <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="landing-page.html">Landing Page</a></li>
+                        <li><a href="pricing.html">Pricing Table</a></li>
+                        <li><a href="service-3.html">Service</a></li>
+                        <li><a href="support.html">Support</a></li>
+                        <li><a href="sitemap.html">Sitemap</a></li>
+                        <li><a href="timeline.html">Timeline</a></li>
+                        <li><a href="404.html">404</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="register1.html">Register</a></li>
+                        <li><a href="login1.html">Login</a></li>
+                      </ul>
+                   </li>                   
+                   <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages #2<b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="coming-soon.html">Coming Soon</a></li>
+                        <li><a href="features-4.html">Features</a></li>
+                        <li><a href="statement.html">Statement</a></li>
+                        <li><a href="tasks.html">Tasks</a></li>
+                        <li><a href="resume.html">Resume</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="make-post.html">Make Post</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="error-log.html">Error Log</a></li>
+                      </ul>
+                   </li>
+                   <li><a href="service.html">Service</a></li>
+                   <li><a href="aboutus.html">About Us</a></li>
+                   <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Blog <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="blog-2.html">Blog #1</a></li>
+                        <li><a href="blog-4.html">Blog #1</a></li>
+                        <li><a href="blog-single.html">Blog Single</a></li>
+                      </ul>
+                    </li>
+                                        
+                   <li><a href="portfolio.html">Portfolio</a></li>
+                   <li><a href="contactus.html">Contact</a></li-->
+                 </ul>
+               </div>
+              </div>
+           </div>
+         </div>
+<!-- Navigation bar ends -->
+
+<div class="content">
+  <div class="container">
+    [% content %]
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+          <div class="copy">
+            <h6>[% default_title %]</h6>
+            <p>Copyright &copy; <a href="#">Tilemap.JP / 歴史国土プロジェクト / 地図タイル工法協会</a></p>
+            <p class="pull-right">Powered by <a href="http://amon.64p.org/">Amon2</a></p>
+          </div>
+      </div>
+    </div>
+  <div class="clearfix"></div>
+  </div>
+</footer> 
+
+<!-- JS -->
+<!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script> 
+<script src="//cdn.jsdelivr.net/isotope/1.5.24/jquery.isotope.min.js"></script> <!-- Isotope for gallery -->
+<!--script src="[% uri_for('/common/static/js/jquery.js') %]"></script-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<!--script src="[% uri_for('/common/static/js/bootstrap.js') %]"></script-->
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+<script src="//cdn.jsdelivr.net/isotope/1.5.24/jquery.isotope.min.js"></script>
+<script src="[% uri_for('/common/static/js/jquery.prettyPhoto.js') %]"></script> <!-- prettyPhoto for images -->
+<script src="[% uri_for('/common/static/js/jquery.cslider.js') %]"></script> <!-- Parallax slider -->
+<script src="[% uri_for('/common/static/js/modernizr.custom.28468.js') %]"></script>
+<script src="[% uri_for('/common/static/js/filter.js') %]"></script> <!-- Filter for support page -->
+<script src="[% uri_for('/common/static/js/cycle.js') %]"></script> <!-- Cycle slider -->
+<script src="[% uri_for('/common/static/js/jquery.flexslider-min.js') %]"></script> <!-- Flex slider -->
+<script src="[% uri_for('/common/static/js/jquery.tweet.js') %]"></script> <!-- jQuery Twitter -->
+<script src="[% uri_for('/common/static/js/easing.js') %]"></script> <!-- Easing -->
+<script src="[% uri_for('/common/static/js/custom.js') %]"></script>
+<script src="[% uri_for('/common/static/js/es5-shim.min.js') %]"></script>
+<script src="[% static_file('/static/js/main.js') %]"></script>
+[% javascript %]
+</body>
+</html>
