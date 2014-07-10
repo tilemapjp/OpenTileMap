@@ -1,4 +1,5 @@
 config/development.pl
+config/sed.sh
 /blib/
 /.build/
 _build/
